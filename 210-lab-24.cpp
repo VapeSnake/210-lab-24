@@ -6,17 +6,16 @@
 using namespace std;
 
 const int SZ_NAMES = 200,
-          SZ_COLORS = 25,
-          MAX_AGE = 20;
+    SZ_COLORS = 25,
+    MAX_AGE = 20;
 
-string select_goat(const set <Goat> &trip);
-void delete_goat(set <Goat> &trip);
-void add_goat(set <Goat> &trip, string[], string[]);
-void display_trip(const set<Goat> &trip); // Updated to pass by reference to stop unnecessary copies of set. Const to prevent mod.
+string select_goat(const set < Goat > & trip);
+void delete_goat(set < Goat > & trip);
+void add_goat(set < Goat > & trip, string[], string[]);
+void display_trip(const set < Goat > & trip); // Updated to pass by reference to stop unnecessary copies of set. Const to prevent mod.
 int main_menu();
 
-int main()
-{
+int main() {
     srand(time(0));
     bool again;
 
@@ -25,23 +24,21 @@ int main()
     string names[SZ_NAMES];
     int i = 0;
     while (fin >> names[i++])
-        ;
+    ;
     fin.close();
     ifstream fin1("colors.txt");
     string colors[SZ_COLORS];
     i = 0;
     while (fin1 >> colors[i++])
-        ;
+    ;
     fin1.close();
 
-    set<Goat> trip; // Create set of goats in group of goats (A trip!)
+    set < Goat > trip; // Create set of goats in group of goats (A trip!)
     again = true;
 
-    while (again)
-    { // Main menu loop. Will continue until user selects exit.
+    while (again) { // Main menu loop. Will continue until user selects exit.
         int choice = main_menu();
-        switch (choice)
-        {
+        switch (choice) {
         case 1:
             add_goat(trip, names, colors);
             break;
@@ -60,81 +57,71 @@ int main()
     return 0;
 }
 
-int main_menu()
-{
+int main_menu() {
     cout << "*** GOAT MANAGER 3001 ***" << endl;
     cout << "[1] Add a goat" << endl;
     cout << "[2] Delete a goat" << endl;
     cout << "[3] List goats" << endl;
     cout << "[4] Exit" << endl;
     int choice;
-    do
-    { // Do while for input validation.
+    do { // Do while for input validation.
         cin >> choice;
-        if (choice < 1 || choice > 4)
-        {
+        if (choice < 1 || choice > 4) {
             cout << "Invalid choice. Please try again: ";
         }
     } while (choice < 1 || choice > 4);
     return choice;
 }
 // create a goat with random name, age, and color and add to the set
-void add_goat(set<Goat> &trip, string names[], string colors[])
-{
+void add_goat(set < Goat > & trip, string names[], string colors[]) {
     string name = names[rand() % SZ_NAMES];
     int age = rand() % MAX_AGE + 1;
     string color = colors[rand() % SZ_COLORS];
     trip.insert(Goat(name, age, color)); // Pushback not needed for set, since it auto organizes elements.
 }
 
-// Let user select goat from set. Will be used for delete goat function.
-string select_goat(const set<Goat> &trip)
-{ // Validation for empty set. If no goats, kick user back to main menu.
-    if (trip.empty())
-    {
+// Let user select goat from set by name. Will be used for delete goat function.
+string select_goat(const set < Goat > & trip) { // Validation for empty set. If no goats, kick user back to main menu.
+    if (trip.empty()) {
         cout << "No goats to select!\n" << endl;
         return "";
     }
-int index = 1;
+    int index = 1;
     for (const auto & goat: trip) { // Shows organized list of goats to choose.
         cout << "[" << index << "] " << goat.get_name() << endl;
         index++;
     }
     string name;
-    do  { // Do while for input validation. User must select a valid goat name from the list.
+    do { // Do while for input validation. User must select a valid goat name from the list.
         cout << "Select a goat by name: ";
         cin >> name;
-        if (trip.find(name) == trip.end()) {    // Use find function to check if goat exists in set. 
-         cout << "Goat not found. Please try again: "; // Relies on overloaded < operator to find correct goat.
+        if (trip.find(name) == trip.end()) { // Use find function from set header to check if goat exists in set. 
+            cout << "Goat not found. Returning to main menu... \n"; // Relies on overloaded < operator to find correct goat.
+            return ""; // If goat not found, return empty string to signal main menu to kick user back.
         }
     } while (trip.find(name) == trip.end());
     return name;
 }
 
 // delete goat from set, this time by using the name.
-void delete_goat(set <Goat> &trip)
-{
-    if (trip.empty())
-    {
+void delete_goat(set < Goat > & trip) {
+    if (trip.empty()) {
         cout << "No goats to delete!\n" << endl;
         return;
     }
-    string name = select_goat(trip);
+    string name = select_goat(trip); // Get goat name by select_goat function.
     trip.erase(name); // Erase goat from set by name. Relies on overloaded < operator to find correct goat.
 }
 
 // display goats in list
-void display_trip(const set<Goat> &trip)
-{
-    if (trip.empty())
-    { // If no goats in set, kick user back to main menu.
+void display_trip(const set < Goat > & trip) {
+    if (trip.empty()) { // If no goats in set, kick user back to main menu.
         cout << "No goats to display! Go add some goats!\n" << endl;
         return;
     }
     cout << left << setw(20) << "Name" << setw(10) << "Age" << setw(15) << "Color" << endl;
     cout << "-----------------------------------------" << endl;
-    for (const auto &goat : trip)
-    { // Displays goats in organized format.
+    for (const auto & goat: trip) { // Displays goats in organized format.
         cout << left << setw(20) << goat.get_name() << setw(10) << goat.get_age() << setw(15) << goat.get_color() << endl;
     }
 }
