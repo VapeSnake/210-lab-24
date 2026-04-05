@@ -10,8 +10,8 @@ const int SZ_NAMES = 200,
           MAX_AGE = 20;
 
 string select_goat(const set <Goat> &trip);
-void delete_goat(set<Goat> &trip);
-void add_goat(set<Goat> &trip, string[], string[]);
+void delete_goat(set <Goat> &trip);
+void add_goat(set <Goat> &trip, string[], string[]);
 void display_trip(const set<Goat> &trip); // Updated to pass by reference to stop unnecessary copies of set. Const to prevent mod.
 int main_menu();
 
@@ -88,44 +88,25 @@ void add_goat(set<Goat> &trip, string names[], string colors[])
 }
 
 // Let user select goat from set. Will be used for delete goat function.
-string select_goat(const set<Goat> trip)
+string select_goat(const set<Goat> &trip)
 {
-    int index = 1;
-    for (const auto &goat : trip)
-    { // Shows organized list of goats to choose.
-        cout << "[" << index << "] " << goat.get_name() << endl;
-        index++;
-    }
-    string choice;
-    do
-    { // Do while for input validation.
-        cout << "Select a goat by name: ";
-        cin >> choice;
-        for (const auto &goat : trip)
-        {
-            if (goat.get_name() == choice)
-            {
-                return choice; // Return name of goat in set.
-            }
-        }
-        cout << "Invalid choice. Please try again." << endl;
-    } while (true);
+
 }
 
 // delete goat from set, this time by using the name.
-void delete_goat(string n)
+void delete_goat(set <Goat> &trip)
 {
-string name = select_goat(n);
-    ;
+    string name = select_goat(trip);
+    trip.erase(name); // Erase goat from set by name. Relies on overloaded < operator to find correct goat.
 }
 
-    // display goats in list
-    void display_trip(const set<Goat> &trip)
-    {
-        cout << left << setw(20) << "Name" << setw(10) << "Age" << setw(15) << "Color" << endl;
-        cout << "-----------------------------------------" << endl;
-        for (const auto &goat : trip)
-        { // Displays goats in organized format.
-            cout << left << setw(20) << goat.get_name() << setw(10) << goat.get_age() << setw(15) << goat.get_color() << endl;
-        }
+// display goats in list
+void display_trip(const set<Goat> &trip)
+{
+    cout << left << setw(20) << "Name" << setw(10) << "Age" << setw(15) << "Color" << endl;
+    cout << "-----------------------------------------" << endl;
+    for (const auto &goat : trip)
+    { // Displays goats in organized format.
+        cout << left << setw(20) << goat.get_name() << setw(10) << goat.get_age() << setw(15) << goat.get_color() << endl;
     }
+}
