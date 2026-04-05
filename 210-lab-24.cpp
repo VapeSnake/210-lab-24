@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
-#include <list>
+#include <set>
 #include "Goat.h"
 using namespace std;
 
@@ -9,10 +9,10 @@ const int SZ_NAMES = 200,
     SZ_COLORS = 25,
     MAX_AGE = 20;
 
-int select_goat(list < Goat > trip);
-void delete_goat(list < Goat > & trip);
-void add_goat(list < Goat > & trip, string[], string[]);
-void display_trip(list < Goat > trip);
+int select_goat(set < Goat > trip);
+void delete_goat(set < Goat > & trip);
+void add_goat(set < Goat > & trip, string[], string[]);
+void display_trip(set < Goat > trip);
 int main_menu();
 
 int main() {
@@ -33,7 +33,7 @@ int main() {
     ;
     fin1.close();
 
-    list < Goat > trip; // Create list of goats in group of goats (A trip!)
+    set < Goat > trip; // Create set of goats in group of goats (A trip!)
     again = true;
 
     while (again) { // Main menu loop. Will continue until user selects exit.
@@ -72,34 +72,33 @@ int main_menu() {
     } while (choice < 1 || choice > 4);
     return choice;
 }
-// create a goat with random name, age, and color and add to the list
-void add_goat(list < Goat > & trip, string names[], string colors[]) {
+// create a goat with random name, age, and color and add to the set
+void add_goat(set < Goat > & trip, string names[], string colors[]) {
     string name = names[rand() % SZ_NAMES];
     int age = rand() % MAX_AGE + 1;
     string color = colors[rand() % SZ_COLORS];
-    trip.push_back(Goat(name, age, color));
+    trip.insert(Goat(name, age, color));
 }
 
-// Let user select goat from list. Will be used for delete goat function.
-int select_goat(const list < Goat > trip) {
+// Let user select goat from set. Will be used for delete goat function.
+int select_goat(const set < Goat > trip) {
     int index = 1;
     for (const auto & goat: trip) { // Shows organized list of goats to choose.
         cout << "[" << index << "] " << goat.get_name() << endl;
         index++;
     }
     int choice;
-    do {
-        cout << "Select a goat: ";
+    do { // Do while for input validation.
+        cout << "Select a goat by number: ";
         cin >> choice;
-        if (choice < 1 || choice > index - 1) { // Input validation. Index - 1 since index is incremented one more time after last goat.
-            cout << "Invalid choice. Please try again." << endl;
+        if (choice < 1 || choice >= index) {
+            cout << "Invalid choice. Please try again: ";
         }
-    } while (choice < 1 || choice > index - 1);
-    return choice;
+    } while (choice < 1 || choice >= index);
 }
 
-// delete goat from list
-void delete_goat(list < Goat > & trip) {
+// delete goat from set
+void delete_goat(set < Goat > & trip) {
     int choice = select_goat(trip); // Calls select_goat to get index of goat to delete.
     auto it = trip.begin();
     advance(it, choice - 1); // Advances iterator to the correct position.
