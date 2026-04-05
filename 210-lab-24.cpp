@@ -12,7 +12,7 @@ const int SZ_NAMES = 200,
 int select_goat(set <Goat> trip);
 void delete_goat(set <Goat> &trip);
 void add_goat(set <Goat> &trip, string[], string[]);
-void display_trip(set <Goat> trip);
+void display_trip(const set <Goat> &trip); // Updated to pass by reference to stop unnecessary copies of set. Const to prevent mod.
 int main_menu();
 
 int main()
@@ -84,7 +84,7 @@ void add_goat(set <Goat> &trip, string names[], string colors[])
     string name = names[rand() % SZ_NAMES];
     int age = rand() % MAX_AGE + 1;
     string color = colors[rand() % SZ_COLORS];
-    trip.insert(Goat(name, age, color));
+    trip.insert(Goat(name, age, color)); // Pushback not needed for set, since it auto organizes elements.
 }
 
 // Let user select goat from set. Will be used for delete goat function.
@@ -109,16 +109,10 @@ int select_goat(const set <Goat> trip)
     return choice;
 }
 
-// delete goat from set
+// delete goat from set, this time by using the name.
 void delete_goat(set <Goat> &trip)
 {
-    if (trip.empty()) // Validation to check if there are goats to delete.
-    {
-        cout << "No goats to delete!" << endl;
-        return;
-    }
-    int choice = select_goat(trip); // Calls select_goat to get index of goat to delete.
-    trip.erase(next(trip.begin(), choice - 1)); // Erases goat at selected index with one line of code! Very Nice!
+
 }
 
 // display goats in list
