@@ -100,7 +100,7 @@ int index = 1;
         cout << "[" << index << "] " << goat.get_name() << endl;
         index++;
     }
-    string choice;
+    string choice; /
 
 }
 
