@@ -26,16 +26,11 @@ public:
     void set_color(string c)        { color = c; }
     string get_color() const        { return color; }
 
-    // Overloaded < operator for sorting goats in set.
+    // Overloaded < operator for sorting goats in set by name only.
     bool operator < (const Goat & other) const {
         if (name != other.name) {
-            return name < other.name; // Sort by name first.
-        } else if (age != other.age) {
-            return age < other.age; // If names are the same, sort by age.
-        } else {
-            return color < other.color; // If names and ages are the same, sort by color.
+            return name < other.name; // Sort by name only for set.
         }
     }
 };
-
 #endif

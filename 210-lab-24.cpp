@@ -100,8 +100,15 @@ int index = 1;
         cout << "[" << index << "] " << goat.get_name() << endl;
         index++;
     }
-    string choice; /
-
+    string name;
+    do  { // Do while for input validation. User must select a valid goat name from the list.
+        cout << "Select a goat by name: ";
+        cin >> name;
+        if (trip.find(name) == trip.end()) {    // Use find function to check if goat exists in set. 
+         cout << "Goat not found. Please try again: "; // Relies on overloaded < operator to find correct goat.
+        }
+    } while (trip.find(name) == trip.end());
+    return name;
 }
 
 // delete goat from set, this time by using the name.
@@ -121,7 +128,7 @@ void display_trip(const set<Goat> &trip)
 {
     if (trip.empty())
     { // If no goats in set, kick user back to main menu.
-        cout << "No goats to delete! Go add some goats!\n" << endl;
+        cout << "No goats to display! Go add some goats!\n" << endl;
         return;
     }
     cout << left << setw(20) << "Name" << setw(10) << "Age" << setw(15) << "Color" << endl;
