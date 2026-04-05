@@ -9,10 +9,10 @@ const int SZ_NAMES = 200,
           SZ_COLORS = 25,
           MAX_AGE = 20;
 
-int select_goat(set <Goat> trip);
-void delete_goat(set <Goat> &trip);
-void add_goat(set <Goat> &trip, string[], string[]);
-void display_trip(const set <Goat> &trip); // Updated to pass by reference to stop unnecessary copies of set. Const to prevent mod.
+string select_goat(const set <Goat> &trip);
+void delete_goat(set<Goat> &trip);
+void add_goat(set<Goat> &trip, string[], string[]);
+void display_trip(const set<Goat> &trip); // Updated to pass by reference to stop unnecessary copies of set. Const to prevent mod.
 int main_menu();
 
 int main()
@@ -79,7 +79,7 @@ int main_menu()
     return choice;
 }
 // create a goat with random name, age, and color and add to the set
-void add_goat(set <Goat> &trip, string names[], string colors[])
+void add_goat(set<Goat> &trip, string names[], string colors[])
 {
     string name = names[rand() % SZ_NAMES];
     int age = rand() % MAX_AGE + 1;
@@ -88,7 +88,7 @@ void add_goat(set <Goat> &trip, string names[], string colors[])
 }
 
 // Let user select goat from set. Will be used for delete goat function.
-int select_goat(const set <Goat> trip)
+string select_goat(const set<Goat> trip)
 {
     int index = 1;
     for (const auto &goat : trip)
@@ -96,32 +96,36 @@ int select_goat(const set <Goat> trip)
         cout << "[" << index << "] " << goat.get_name() << endl;
         index++;
     }
-    int choice;
+    string choice;
     do
     { // Do while for input validation.
-        cout << "Select a goat by number: ";
+        cout << "Select a goat by name: ";
         cin >> choice;
-        if (choice < 1 || choice >= index)
+        for (const auto &goat : trip)
         {
-            cout << "Invalid choice. Please try again: ";
+            if (goat.get_name() == choice)
+            {
+                return choice; // Return name of goat in set.
+            }
         }
-    } while (choice < 1 || choice >= index);
-    return choice;
+        cout << "Invalid choice. Please try again." << endl;
+    } while (true);
 }
 
 // delete goat from set, this time by using the name.
-void delete_goat(set <Goat> &trip)
+void delete_goat(string n)
 {
-
+string name = select_goat(n);
+    ;
 }
 
-// display goats in list
-void display_trip(const set <Goat> &trip)
-{
-    cout << left << setw(20) << "Name" << setw(10) << "Age" << setw(15) << "Color" << endl;
-    cout << "-----------------------------------------" << endl;
-    for (const auto &goat : trip)
-    { // Displays goats in organized format.
-        cout << left << setw(20) << goat.get_name() << setw(10) << goat.get_age() << setw(15) << goat.get_color() << endl;
+    // display goats in list
+    void display_trip(const set<Goat> &trip)
+    {
+        cout << left << setw(20) << "Name" << setw(10) << "Age" << setw(15) << "Color" << endl;
+        cout << "-----------------------------------------" << endl;
+        for (const auto &goat : trip)
+        { // Displays goats in organized format.
+            cout << left << setw(20) << goat.get_name() << setw(10) << goat.get_age() << setw(15) << goat.get_color() << endl;
+        }
     }
-}
