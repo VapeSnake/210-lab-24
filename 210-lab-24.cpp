@@ -89,13 +89,29 @@ void add_goat(set<Goat> &trip, string names[], string colors[])
 
 // Let user select goat from set. Will be used for delete goat function.
 string select_goat(const set<Goat> &trip)
-{
+{ // Validation for empty set. If no goats, kick user back to main menu.
+    if (trip.empty())
+    {
+        cout << "No goats to select!\n" << endl;
+        return "";
+    }
+int index = 1;
+    for (const auto & goat: trip) { // Shows organized list of goats to choose.
+        cout << "[" << index << "] " << goat.get_name() << endl;
+        index++;
+    }
+    string choice;
 
 }
 
 // delete goat from set, this time by using the name.
 void delete_goat(set <Goat> &trip)
 {
+    if (trip.empty())
+    {
+        cout << "No goats to delete!\n" << endl;
+        return;
+    }
     string name = select_goat(trip);
     trip.erase(name); // Erase goat from set by name. Relies on overloaded < operator to find correct goat.
 }
@@ -103,6 +119,11 @@ void delete_goat(set <Goat> &trip)
 // display goats in list
 void display_trip(const set<Goat> &trip)
 {
+    if (trip.empty())
+    { // If no goats in set, kick user back to main menu.
+        cout << "No goats to delete! Go add some goats!\n" << endl;
+        return;
+    }
     cout << left << setw(20) << "Name" << setw(10) << "Age" << setw(15) << "Color" << endl;
     cout << "-----------------------------------------" << endl;
     for (const auto &goat : trip)
