@@ -9,10 +9,10 @@ const int SZ_NAMES = 200,
           SZ_COLORS = 25,
           MAX_AGE = 20;
 
-int select_goat(set<Goat> trip);
-void delete_goat(set<Goat> &trip);
-void add_goat(set<Goat> &trip, string[], string[]);
-void display_trip(set<Goat> trip);
+int select_goat(set <Goat> trip);
+void delete_goat(set <Goat> &trip);
+void add_goat(set <Goat> &trip, string[], string[]);
+void display_trip(set <Goat> trip);
 int main_menu();
 
 int main()
@@ -79,7 +79,7 @@ int main_menu()
     return choice;
 }
 // create a goat with random name, age, and color and add to the set
-void add_goat(set<Goat> &trip, string names[], string colors[])
+void add_goat(set <Goat> &trip, string names[], string colors[])
 {
     string name = names[rand() % SZ_NAMES];
     int age = rand() % MAX_AGE + 1;
@@ -88,7 +88,7 @@ void add_goat(set<Goat> &trip, string names[], string colors[])
 }
 
 // Let user select goat from set. Will be used for delete goat function.
-int select_goat(const set<Goat> trip)
+int select_goat(const set <Goat> trip)
 {
     int index = 1;
     for (const auto &goat : trip)
@@ -109,15 +109,20 @@ int select_goat(const set<Goat> trip)
     return choice;
 }
 
-// delete goat from set. No longer needs to iterate, can use find() and erase() directly.
-void delete_goat(set<Goat> &trip)
+// delete goat from set
+void delete_goat(set <Goat> &trip)
 {
-    int choice = select_goat(trip);
-    auto it = trip.beg
+    if (trip.empty()) // Validation to check if there are goats to delete.
+    {
+        cout << "No goats to delete!" << endl;
+        return;
+    }
+    int choice = select_goat(trip); // Calls select_goat to get index of goat to delete.
+    trip.erase(next(trip.begin(), choice - 1)); // Erases goat at selected index with one line of code! Very Nice!
 }
 
 // display goats in list
-void display_trip(const set<Goat> trip)
+void display_trip(const set <Goat> &trip)
 {
     cout << left << setw(20) << "Name" << setw(10) << "Age" << setw(15) << "Color" << endl;
     cout << "-----------------------------------------" << endl;
